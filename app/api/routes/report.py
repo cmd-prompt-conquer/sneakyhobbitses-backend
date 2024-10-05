@@ -30,18 +30,38 @@ async def post_result(
     return report
 
 @router.get(
-    "/{id}",
+    "",
     response_model=Leaderboard,
 )
 async def get_leaderboard(
     session: SessionDep,
-    id: int,
     ):
-    """
-    Get questions for topic
-    """
 
     reports = session.exec(select(Report)).all()
+    email_scores = {}
+    for r in reports:
+        if email_scores.get(r.email):
+            email_scores[r.email] += r.score
+        else:
+            email_scores[r.email] = r.score
+
+    data = []
+    for email, score in email_scores.items():
+        data.append(EmailScore(email=email, score=score))
+    
+    return Leaderboard(data=data, count=len(data))
+
+
+@router.get(
+    "/{id}",
+    response_model=Leaderboard,
+)
+async def get_leaderboard_for_topic(
+    session: SessionDep,
+    id: int,
+    ):
+
+    reports = session.exec(select(Report).where(Report.topic_id == id)).all()
     email_scores = {}
     for r in reports:
         if email_scores.get(r.email):
