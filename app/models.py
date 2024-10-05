@@ -135,12 +135,6 @@ class Question(QuestionBase, table=True):
     topic_id: int = Field(default=None, foreign_key="topic.id", nullable=False)
     topic: Topic = Relationship(back_populates="questions")
 
-class Result(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    topic_id: int | None = Field(default=None, foreign_key="topic.id", nullable=False)
-    score: int
-    email: str
-
 class GenOptions(BaseModel):
     name: str
     description: str
@@ -162,8 +156,19 @@ class QuestionsOut(SQLModel):
     questions: list[Question]
     count: int
 
-class Report(SQLModel, table=True):
+class ReportBase(SQLModel):
     id: int = Field(default=None, primary_key=True)
     topic_id: int | None = Field(default=None, foreign_key="topic.id", nullable=False)
+
+class Report(ReportBase, table=True):
     score: int
     email: str
+
+
+class EmailScore(BaseModel):
+    email: str
+    score: int
+
+class Leaderboard(BaseModel):
+    data: list[EmailScore]
+    count: int
