@@ -34,7 +34,10 @@ def get_url():
     server = os.getenv("POSTGRES_SERVER", "db")
     port = os.getenv("POSTGRES_PORT", "5432")
     db = os.getenv("POSTGRES_DB", "app")
-    return f"postgresql+psycopg://{user}:{password}@{server}:{port}/{db}"
+    if os.getenv("ENVIRONMENT") == 'production':
+        return f"postgresql+psycopg://{user}:{password}@/{db}?host=/cloudsql/olaboard:europe-west3:olaboard-db"
+    else:
+        return f"postgresql+psycopg://{user}:{password}@{server}:{port}/{db}"
 
 
 def run_migrations_offline():

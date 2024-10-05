@@ -1,11 +1,20 @@
+import os
 from sqlmodel import Session, create_engine, select
 
 from app import crud
 from app.core.config import settings
 from app.models import User, UserCreate
 
-engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
+if os.getenv("ENVIRONMENT") == 'production':
+    user = os.getenv("POSTGRES_USER")
+    password = os.getenv("POSTGRES_PASSWORD")
+    db = os.getenv("POSTGRES_DB", "app")
+    connection_string = f"postgresql+psycopg://{user}:{password}@/{db}?host=/cloudsql/olaboard:europe-west3:olaboard-db"
+else:
+    connection_string = str(settings.SQLALCHEMY_DATABASE_URI)
+
+engine = create_engine(connection_string)
 
 # make sure all SQLModel models are imported (app.models) before initializing DB
 # otherwise, SQLModel might fail to initialize relationships properly

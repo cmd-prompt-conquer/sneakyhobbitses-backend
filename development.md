@@ -28,8 +28,8 @@ Development URLs, for local development.
 
 Backend: http://localhost:8000/api/
 
-Automatic Interactive Docs (Swagger UI): https://localhost:8000/docs
+Automatic Interactive Docs (Swagger UI): http://localhost:8000/docs
 
-Automatic Alternative Docs (ReDoc): https://localhost:8000/redoc
+Automatic Alternative Docs (ReDoc): http://localhost:8000/redoc
 
 Adminer: http://localhost:8080
