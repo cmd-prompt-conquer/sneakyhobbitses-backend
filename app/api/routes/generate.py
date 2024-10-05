@@ -16,6 +16,7 @@ router = APIRouter()
 
 @router.post(
     "",
+    response_model=Topic,
 )
 async def generate(
     session: SessionDep,

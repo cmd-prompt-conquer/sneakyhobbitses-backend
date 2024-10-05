@@ -153,3 +153,17 @@ class GenOptions(BaseModel):
         if isinstance(value, str):
             return cls(**json.loads(value))
         return value
+
+class TopicsOut(SQLModel):
+    topics: list[Topic]
+    count: int
+
+class QuestionsOut(SQLModel):
+    questions: list[Question]
+    count: int
+
+class Report(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    topic_id: int | None = Field(default=None, foreign_key="topic.id", nullable=False)
+    score: int
+    email: str
