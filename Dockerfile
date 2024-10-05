@@ -27,4 +27,4 @@ COPY ./tests-start.sh /app/
 
 COPY ./app /app/app
 
-CMD /start-reload.sh
+CMD /start.sh
