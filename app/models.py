@@ -1,5 +1,7 @@
-from sqlmodel import Field, Relationship, SQLModel
-
+import json
+from sqlmodel import Field, Relationship, SQLModel, Column
+from sqlalchemy.dialects.postgresql import JSONB
+from pydantic import BaseModel, model_validator
 
 # Shared properties
 # TODO replace email str with EmailStr when sqlmodel supports it
@@ -111,3 +113,43 @@ class TokenPayload(SQLModel):
 class NewPassword(SQLModel):
     token: str
     new_password: str
+
+class TopicBase(SQLModel):
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    description: str
+    source: str | None = None
+    reward: str
+    email: str
+
+class Topic(TopicBase, table=True):
+    questions: list["Question"] = Relationship(back_populates="topic")
+
+class QuestionBase(SQLModel):
+    id: int | None = Field(default=None, primary_key=True)
+    question: str
+    answer: str
+    options: list[str] = Field(default_factory=list, sa_column=Column(JSONB))
+
+class Question(QuestionBase, table=True):
+    topic_id: int = Field(default=None, foreign_key="topic.id", nullable=False)
+    topic: Topic = Relationship(back_populates="questions")
+
+class Result(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    topic_id: int | None = Field(default=None, foreign_key="topic.id", nullable=False)
+    score: int
+    email: str
+
+class GenOptions(BaseModel):
+    name: str
+    description: str
+    reward: str
+    email: str
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value

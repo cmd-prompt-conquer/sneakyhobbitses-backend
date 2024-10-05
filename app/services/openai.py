@@ -39,11 +39,12 @@ class OpenAIService:
         self.image_model = "dall-e-3"
 
     async def generate_questions(self, content: str):
+        return DUMMY_QUESTIONS
         result = await self._generate(QUESTION_KEYWORD_PROMT_V3, content)
         return result.get("questions", "")
 
     async def generate_transcription(self, path: str):
-        # return """Uh, let's talk about the severity of the... No, no, that's for another time. Okay, now let's switch to the other side. Okay, now let's go switch to the other side. Okay, go. Die, God, no, no, no. Bitch. You're awesome. I'm good. I'm evil. Bye. Hi, we are all orcs and... Sorry. Stop. We are building a platform for competitors. Hi, we are all orcs. Uh, we're in a company. No, that's awesome. Uh, we are, uh... Hey, we are all orcs and we are building a platform for competitors. Okay, we are building a platform for competitors. Done. Don't shoot yourself. We are building a learning platform for competitors. Hi, we are all orcs and we are building a learning platform for the company. My name is Nikolai and I've been working as a software engineer for the past 12 years. During that time I've worked on numerous projects and each time I had to join an ongoing one. I had to read dozens of documents and code in order to catch up with the rest of the team. Hey, everyone, I'm Georgi and I've spent the last eight years working for Uber and in that period I went through many different projects from various fields. Many accounting, marketing, compliance, working with multiple teams with our background. Working in a new domain is a tough process, so a little help is always needed. Great. How much do you want to pay? I mean, I'm asking you. I don't know, maybe 25,000. Okay, that's what I need. That's the biggest challenge, Lukas. Yes, okay. I don't want to say just, why am I building it? In multiple projects that I've been, it's always the pain to learn new stuff. Literally, that's what I need. Okay, that's it. Yes. Hi, we are Allport and we are building a platform for learning for companies. I'm Lukai and each time I joined an ongoing project, I've been struggling with learning dozens of documents in order to catch up with the rest of the team. Hey, everyone, I'm Georgi. I've spent the last eight years working for Uber and in that period I went through many different projects with various fields. Many accounting, marketing, compliance, working with multiple teams with other backgrounds. Working with many is a tough process, so a little help is always needed. And I'm Stefan, so you've heard what the why is and what we are building is basically a Duolingo for business or Duolingo for company knowledge. It doesn't matter what the group or the team that learns it. We believe that in the future, cross-team collaboration is going to be way better because people can empathize and understand the knowledge that the others have so that they can build better and higher quality products. That's the question I'm looking for. Is there a question? Yes, there is a question. Yes. Okay, I'm just going to... Sure. Okay. I'm just going to... Okay. I'm just going to... Okay. Okay. Okay. Okay."""
+        return """Uh, let's talk about the severity of the... No, no, that's for another time. Okay, now let's switch to the other side. Okay, now let's go switch to the other side. Okay, go. Die, God, no, no, no. Bitch. You're awesome. I'm good. I'm evil. Bye. Hi, we are all orcs and... Sorry. Stop. We are building a platform for competitors. Hi, we are all orcs. Uh, we're in a company. No, that's awesome. Uh, we are, uh... Hey, we are all orcs and we are building a platform for competitors. Okay, we are building a platform for competitors. Done. Don't shoot yourself. We are building a learning platform for competitors. Hi, we are all orcs and we are building a learning platform for the company. My name is Nikolai and I've been working as a software engineer for the past 12 years. During that time I've worked on numerous projects and each time I had to join an ongoing one. I had to read dozens of documents and code in order to catch up with the rest of the team. Hey, everyone, I'm Georgi and I've spent the last eight years working for Uber and in that period I went through many different projects from various fields. Many accounting, marketing, compliance, working with multiple teams with our background. Working in a new domain is a tough process, so a little help is always needed. Great. How much do you want to pay? I mean, I'm asking you. I don't know, maybe 25,000. Okay, that's what I need. That's the biggest challenge, Lukas. Yes, okay. I don't want to say just, why am I building it? In multiple projects that I've been, it's always the pain to learn new stuff. Literally, that's what I need. Okay, that's it. Yes. Hi, we are Allport and we are building a platform for learning for companies. I'm Lukai and each time I joined an ongoing project, I've been struggling with learning dozens of documents in order to catch up with the rest of the team. Hey, everyone, I'm Georgi. I've spent the last eight years working for Uber and in that period I went through many different projects with various fields. Many accounting, marketing, compliance, working with multiple teams with other backgrounds. Working with many is a tough process, so a little help is always needed. And I'm Stefan, so you've heard what the why is and what we are building is basically a Duolingo for business or Duolingo for company knowledge. It doesn't matter what the group or the team that learns it. We believe that in the future, cross-team collaboration is going to be way better because people can empathize and understand the knowledge that the others have so that they can build better and higher quality products. That's the question I'm looking for. Is there a question? Yes, there is a question. Yes. Okay, I'm just going to... Sure. Okay. I'm just going to... Okay. I'm just going to... Okay. Okay. Okay. Okay."""
         transcription = await self.client.audio.transcriptions.create(
             model=self.audio_model,
             file=open(path, "rb"),
@@ -52,24 +53,24 @@ class OpenAIService:
         return transcription.text
 
     async def generate_from_video(self, frames: str, transcription: str):
-        # return """
-        #     The video features a discussion among three individuals—Nikolai, Georgi, and Stefan—who are introducing their project, a learning platform designed for companies. The setting appears casual, with the participants seated in a room, engaging in a conversation about their experiences and the challenges they face in onboarding and learning within new projects.
-        #     ### Key Points from the Video:
-        #     1. **Introduction of the Project**:
-        #     - The group refers to themselves as "Allport" and describes their platform as a "Duolingo for business" aimed at facilitating learning within companies.
-        #     2. **Personal Experiences**:
-        #     - **Nikolai** shares his background as a software engineer with 12 years of experience, highlighting the difficulties he faces when joining ongoing projects, particularly the need to read extensive documentation to catch up.
-        #     - **Georgi** mentions his eight years at Uber, where he worked on various projects across different fields, emphasizing the challenges of adapting to new domains and the necessity for support during this process.
-        #     3. **Purpose of the Platform**:
-        #     - The platform aims to improve cross-team collaboration by enabling employees to understand each other's knowledge and expertise, ultimately leading to better product development.
-        #     4. **Challenges Addressed**:
-        #     - The discussion touches on the common pain points of learning new information quickly and effectively when starting new projects, which the platform seeks to alleviate.
-        #     5. **Engagement and Interaction**:
-        #     - The conversation includes light-hearted moments and informal exchanges, indicating a friendly rapport among the participants.
-        #     6. **Future Vision**:
-        #     - Stefan articulates a vision for enhanced collaboration in the future, driven by improved understanding among team members.
-        #     Overall, the video serves as an introduction to the team and their innovative approach to corporate learning, highlighting their backgrounds, the challenges they aim to solve, and their vision for the future of workplace collaboration.
-        #     """
+        return """
+            The video features a discussion among three individuals—Nikolai, Georgi, and Stefan—who are introducing their project, a learning platform designed for companies. The setting appears casual, with the participants seated in a room, engaging in a conversation about their experiences and the challenges they face in onboarding and learning within new projects.
+            ### Key Points from the Video:
+            1. **Introduction of the Project**:
+            - The group refers to themselves as "Allport" and describes their platform as a "Duolingo for business" aimed at facilitating learning within companies.
+            2. **Personal Experiences**:
+            - **Nikolai** shares his background as a software engineer with 12 years of experience, highlighting the difficulties he faces when joining ongoing projects, particularly the need to read extensive documentation to catch up.
+            - **Georgi** mentions his eight years at Uber, where he worked on various projects across different fields, emphasizing the challenges of adapting to new domains and the necessity for support during this process.
+            3. **Purpose of the Platform**:
+            - The platform aims to improve cross-team collaboration by enabling employees to understand each other's knowledge and expertise, ultimately leading to better product development.
+            4. **Challenges Addressed**:
+            - The discussion touches on the common pain points of learning new information quickly and effectively when starting new projects, which the platform seeks to alleviate.
+            5. **Engagement and Interaction**:
+            - The conversation includes light-hearted moments and informal exchanges, indicating a friendly rapport among the participants.
+            6. **Future Vision**:
+            - Stefan articulates a vision for enhanced collaboration in the future, driven by improved understanding among team members.
+            Overall, the video serves as an introduction to the team and their innovative approach to corporate learning, highlighting their backgrounds, the challenges they aim to solve, and their vision for the future of workplace collaboration.
+            """
         content = [
             {
                 "type": "text",
