@@ -1,11 +1,13 @@
 import cv2
 import base64
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile, Message
+import tempfile
+from fastapi import APIRouter, File, HTTPException, UploadFile
 
 from app.api.deps import (
     CurrentUser,
     SessionDep,
 )
+
 from moviepy.editor import VideoFileClip
 from app.services.openai import OpenAIService
 
@@ -28,9 +30,15 @@ async def generate(
         raise HTTPException(status_code=400, detail="No resources provided")
 
     if file.content_type == "video/mp4":
-        content = await process_video(f, ai)
+        f = tempfile.NamedTemporaryFile(
+            suffix=f"_{file.filename.lower()}", delete=False
+        )
+        f.write(file.file.read())
+        file.file.close()
+        f.close()
+        content = await process_video(f.name, ai)
     else:
-        content = file.read()
+        content = file.file.read()
 
     questions = await ai.generate_questions(content)
 
@@ -64,7 +72,7 @@ def generate_frames(path: str):
     video.release()
     return frames
 
-def generate_audio(self, video_path: str) -> str:
+def generate_audio(video_path: str) -> str:
     audio_path = video_path.replace(".mp4", ".mp3")
     clip = VideoFileClip(video_path)
     clip.audio.write_audiofile(audio_path, bitrate="32k")
