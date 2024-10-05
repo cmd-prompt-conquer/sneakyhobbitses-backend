@@ -27,20 +27,20 @@ async def generate(
     Generate content
     """
 
-    # if file.content_type == "video/mp4":
-    #     f = tempfile.NamedTemporaryFile(
-    #         suffix=f"_{file.filename.lower()}", delete=False
-    #     )
-    #     f.write(file.file.read())
-    #     file.file.close()
-    #     f.close()
-    #     content = await process_video(f.name, ai)
-    #     os.unlink(f.name)
-    # else:
-    #     content = file.file.read()
+    if file.content_type == "video/mp4":
+        f = tempfile.NamedTemporaryFile(
+            suffix=f"_{file.filename.lower()}", delete=False
+        )
+        f.write(file.file.read())
+        file.file.close()
+        f.close()
+        content = await process_video(f.name, ai)
+        os.unlink(f.name)
+    else:
+        content = file.file.read()
 
-    # questions = await ai.generate_questions(content)
-    questions = DUMMY_QUESTIONS
+    questions = await ai.generate_questions(content)
+    questions = []
     qs = []
     for q in questions:
         qs.append(Question(
