@@ -21,6 +21,14 @@ async def post_result(
     topic_id: int = Form(...),
     answers: list[str] = Form(...)
     ):
+
+    answers = Answers(
+        email=email,
+        topic_id=topic_id,
+        answers=answers,
+    )
+    session.add(answers)
+    session.commit()
     report = Report(
         email=email,
         score=score,
@@ -29,13 +37,6 @@ async def post_result(
     session.add(report)
     session.commit()
     session.refresh(report)
-    answers = Answers(
-        email=email,
-        topic_id=topic_id,
-        answers=answers,
-    )
-    session.add(answers)
-    session.commit()
     return report
 
 @router.get(
