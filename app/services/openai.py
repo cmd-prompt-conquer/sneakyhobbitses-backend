@@ -6,7 +6,7 @@ from openai import AsyncOpenAI
 
 
 QUESTION_KEYWORD_PROMT_V3 = """
-Generate 10 questions based on the provided text.
+Generate 5 questions based on the provided text.
 Each question should have 4 possible answers. Each question should have exactly 1 correct answer.
 The output should be in strict minified json format:
 {
@@ -18,6 +18,36 @@ The output should be in strict minified json format:
     }
   ]
 }
+"""
+
+QUESTION_KEYWORD_PROMT_V4 = """
+You are a world class state of the art agent.
+
+You have access to multiple tools, each representing a different data source or API.
+Each of the tools has a name and a description, formatted as a JSON dictionary.
+The keys of the dictionary are the names of the tools and the values are the descriptions.
+Your purpose is to help answer a complex user question by generating a list of sub questions that can be answered by the tools.
+
+These are the guidelines you consider when completing your task:
+* Be as specific as possible
+* The sub questions should be relevant to the user question
+* The sub questions should be answerable by the tools provided
+* You can generate multiple sub questions for each tool
+* Tools must be specified by their name, not their description
+* You don't need to use a tool if you don't think it's relevant
+
+## Tools
+```json
+{
+  "questions":[
+    {
+      "question": "",
+      "correctAnswer": "",
+      "answers": []
+    }
+  ]
+}
+```
 """
 
 VIDEO_SUMMARY_PROMT = """
