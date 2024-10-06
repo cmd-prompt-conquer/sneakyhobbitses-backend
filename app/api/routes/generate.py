@@ -43,7 +43,6 @@ async def generate(
         content = str(content.replace("\r\n", " "))
 
     questions = await ai.generate_questions(content)
-    questions = []
     qs = []
     for q in questions:
         qs.append(Question(
@@ -60,8 +59,8 @@ async def generate(
         questions=qs,
     )
     session.add(topic)
+    # session.add_all(qs)
     session.commit()
-    session.refresh(topic)
     return topic
 
 
