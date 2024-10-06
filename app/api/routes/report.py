@@ -18,8 +18,8 @@ async def post_result(
     email: str = Form(...),
     score: int = Form(...),
     topic_id: int = Form(...),
+    answers: list[str] = Form(...)
     ):
-
     report = Report(
         email=email,
         score=score,
