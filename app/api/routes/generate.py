@@ -38,7 +38,9 @@ async def generate(
         content = await process_video(f.name, ai)
         os.unlink(f.name)
     else:
-        content = file.file.read()
+        content = str(file.file.read())
+        file.file.close()
+        content = str(content.replace("\r\n", " "))
 
     questions = await ai.generate_questions(content)
     questions = []
