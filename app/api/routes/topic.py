@@ -55,12 +55,12 @@ async def get_stats(
     stats = {}
     for i, q in enumerate(questions):
         for a in answers:
-            ass = a.answers[i]
+            ans = a.answers[i]
             qt = q.question
             if not stats.get(qt, None):
                 stats[qt] = [0, 0]
 
-            if answers[i] == q.answer:
+            if ans[i] == q.answer:
                 stats[qt][0] += 1
             else:
                 stats[qt][1] += 1
