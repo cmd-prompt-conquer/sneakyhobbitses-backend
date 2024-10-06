@@ -96,16 +96,18 @@ async def get_topic_stats(session, id):
             for a in answers:
                 ans = a.answers[i]
                 qt = q.question
-                if not stats.get(qt, None):
-                    stats[qt] = [0, 0]
+                if qt not in stats:
+                    stats[qt] = [0, 0]  # [correct_count, incorrect_count]
 
-                if ans[i] == q.answer:
-                    stats[qt][0] += 1
+                if ans == q.answer:
+                    stats[qt][0] += 1  # Increment correct count
                 else:
-                    stats[qt][1] += 1
+                    stats[qt][1] += 1  # Increment incorrect count
 
-        qtop = sorted(stats.items(), key=lambda x: x[1][0])[0][0]
-        qbottom = sorted(stats.items(), key=lambda x: x[1][1])[0][0]
+        # Sort by correct answers (descending) for the top question
+        qtop = max(stats.items(), key=lambda x: x[1][0])[0]
+        # Sort by incorrect answers (descending) for the bottom question
+        qbottom = max(stats.items(), key=lambda x: x[1][1])[0]
 
         return {
             "top": qtop,
