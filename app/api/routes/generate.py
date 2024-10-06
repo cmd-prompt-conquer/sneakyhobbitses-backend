@@ -59,7 +59,8 @@ async def generate(
     )
     session.add(topic)
     session.commit()
-    return topic.model_dump_json()
+    session.refresh(topic)
+    return topic
 
 
 async def process_video(file, ai: OpenAIService):

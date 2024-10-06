@@ -3,7 +3,7 @@ from app.api.deps import (
     SessionDep,
 )
 from sqlmodel import select
-from app.models import Topic, TopicsOut, Question, QuestionsOut
+from app.models import Topic, TopicsOut, Question, TopicOut
 
 
 router = APIRouter()
@@ -27,7 +27,7 @@ async def all_topics(
 
 @router.get(
     "/{id}",
-    response_model=QuestionsOut,
+    response_model=TopicOut,
 )
 async def get_topic(
     session: SessionDep,
@@ -37,5 +37,6 @@ async def get_topic(
     Get questions for topic
     """
 
+    topic = session.exec(select(Topic).where(Topic.id == id)).one()
     questions = session.exec(select(Question).where(Question.topic_id == id)).all()
-    return QuestionsOut(questions=questions, count=len(questions))
+    return TopicOut(topic=topic, questions=questions)

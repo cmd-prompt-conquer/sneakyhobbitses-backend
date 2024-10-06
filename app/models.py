@@ -174,3 +174,7 @@ class EmailScore(BaseModel):
 class Leaderboard(BaseModel):
     data: list[EmailScore]
     count: int
+
+class TopicOut(BaseModel):
+    topic: Topic
+    questions: list[Question]
