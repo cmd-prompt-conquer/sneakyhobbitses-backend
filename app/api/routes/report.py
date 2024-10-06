@@ -1,9 +1,10 @@
+import json
 from fastapi import APIRouter, Form
 from app.api.deps import (
     SessionDep,
 )
 from sqlmodel import select
-from app.models import Report, Leaderboard, EmailScore, ReportOut
+from app.models import Report, Leaderboard, EmailScore, Answers
 
 
 router = APIRouter()
@@ -28,6 +29,13 @@ async def post_result(
     session.add(report)
     session.commit()
     session.refresh(report)
+    answers = Answers(
+        email=email,
+        topic_id=topic_id,
+        answers=answers,
+    )
+    session.add(answers)
+    session.commit()
     return report
 
 @router.get(

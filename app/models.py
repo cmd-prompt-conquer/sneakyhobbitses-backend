@@ -178,3 +178,9 @@ class Leaderboard(BaseModel):
 class TopicOut(BaseModel):
     topic: Topic
     questions: list[Question]
+
+class Answers(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    topic_id: int | None = Field(default=None, foreign_key="topic.id", nullable=False)
+    email: str
+    answers: list[str] = Field(default_factory=list, sa_column=Column(JSONB))
