@@ -3,7 +3,7 @@ from app.api.deps import (
     SessionDep,
 )
 from sqlmodel import select
-from app.models import Report, Leaderboard, EmailScore
+from app.models import Report, Leaderboard, EmailScore, ReportOut
 
 
 router = APIRouter()
@@ -27,6 +27,7 @@ async def post_result(
     )
     session.add(report)
     session.commit()
+    session.refresh(report)
     return report
 
 @router.get(

@@ -164,6 +164,8 @@ class Report(ReportBase, table=True):
     score: int
     email: str
 
+class ReportOut(BaseModel):
+    report: Report
 
 class EmailScore(BaseModel):
     email: str
