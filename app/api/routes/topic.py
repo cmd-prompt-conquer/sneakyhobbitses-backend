@@ -50,19 +50,20 @@ async def get_stats(
     id: int,
     ):
 
-    answer = session.exec(select(Answers).where(Answers.topic_id == id)).all()
-    answers = answer.answers
+    answers = session.exec(select(Answers).where(Answers.topic_id == id)).all()
     questions = session.exec(select(Question).where(Question.topic_id == id)).all()
     stats = {}
     for i, q in enumerate(questions):
-        qt = q.question
-        if not stats.get(qt, None):
-            stats[qt] = [0, 0]
+        for a in answers:
+            ass = a.answers[i]
+            qt = q.question
+            if not stats.get(qt, None):
+                stats[qt] = [0, 0]
 
-        if answers[i] == q.answer:
-            stats[qt][0] += 1
-        else:
-            stats[qt][1] += 1
+            if answers[i] == q.answer:
+                stats[qt][0] += 1
+            else:
+                stats[qt][1] += 1
 
     qtop = sorted(stats.items(), key=lambda x: x[1][0])[0][0]
     qbottom = sorted(stats.items(), key=lambda x: x[1][1])[0][0]
