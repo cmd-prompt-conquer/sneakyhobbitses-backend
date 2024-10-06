@@ -4,7 +4,7 @@ from app.api.deps import (
     SessionDep,
 )
 from sqlmodel import select
-from app.models import Report, Leaderboard, EmailScore, Answers
+from app.models import Report, Leaderboard, EmailScore, Answers, ReportRequest
 
 
 router = APIRouter()
@@ -16,23 +16,20 @@ router = APIRouter()
 )
 async def post_result(
     session: SessionDep,
-    email: str = Form(...),
-    score: int = Form(...),
-    topic_id: int = Form(...),
-    answers: list[str] = Form([])
+    reportReq: ReportRequest
     ):
 
     answers = Answers(
-        email=email,
-        topic_id=topic_id,
-        answers=answers,
+        email=reportReq.email,
+        topic_id=reportReq.topic_id,
+        answers=reportReq.answers,
     )
     session.add(answers)
     session.commit()
     report = Report(
-        email=email,
-        score=score,
-        topic_id=topic_id,
+        email=reportReq.email,
+        score=reportReq.score,
+        topic_id=reportReq.topic_id,
     )
     session.add(report)
     session.commit()

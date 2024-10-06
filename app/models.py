@@ -184,3 +184,10 @@ class Answers(SQLModel, table=True):
     topic_id: int | None = Field(default=None, foreign_key="topic.id", nullable=False)
     email: str
     answers: list[str] = Field(default_factory=list, sa_column=Column(JSONB))
+
+
+class ReportRequest(BaseModel):
+    email: str
+    score: int
+    topic_id: int
+    answers: list[str]  # This accepts an array of strings
