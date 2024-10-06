@@ -6,6 +6,21 @@ from openai import AsyncOpenAI
 
 
 QUESTION_KEYWORD_PROMT_V3 = """
+Generate 5 questions based on the provided text.
+Each question should have 4 possible answers. Each question should have exactly 1 correct answer.
+The output should be in strict minified json format:
+{
+  "questions":[
+    {
+      "question": "",
+      "correctAnswer": "",
+      "answers": []
+    }
+  ]
+}
+"""
+
+QUESTION_KEYWORD_PROMT_V3 = """
 Generate 10 questions based on the provided text.
 Each question should have 4 possible answers. Each question should have exactly 1 correct answer.
 The output should be in strict minified json format:
