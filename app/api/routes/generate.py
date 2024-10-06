@@ -37,6 +37,15 @@ async def generate(
         f.close()
         content = await process_video(f.name, ai)
         os.unlink(f.name)
+    if file.content_type == "audio/mp3":
+        f = tempfile.NamedTemporaryFile(
+            suffix=f"_{file.filename.lower()}", delete=False
+        )
+        f.write(file.file.read())
+        file.file.close()
+        f.close()
+        content = await process_audio(f.name, ai)
+        os.unlink(f.name)
     else:
         content = str(file.file.read())
         file.file.close()
@@ -70,6 +79,10 @@ async def process_video(file, ai: OpenAIService):
     transcription = await ai.generate_transcription(audio_path)
     result = await ai.generate_from_video(frames, transcription)
     return result
+
+async def process_audio(audio_path, ai: OpenAIService):
+    transcription = await ai.generate_transcription(audio_path)
+    return transcription
 
 def generate_frames(path: str):
     frames = []
